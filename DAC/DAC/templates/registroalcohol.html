@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Alcoholímetro</title>
+    <link rel="stylesheet" href="/static/css/registeralcohol-style.css">
+    <style>
+        /* Estilos adicionales para el select */
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #f8f8f8;
+            font-size: 16px;
+        }
+        
+        select:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botón de menú hamburguesa -->
+    <div class="menu-toggle">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <!-- Menú lateral -->
+    <nav class="menu">
+        <div class="logo">
+            <img src="/static/images/logo.png" alt="Logo">
+        </div>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="#">Perfil</a></li>
+            <li class="has-submenu">
+                <a href="#">Configuración</a>
+                <ul class="submenu">
+                    <li><a href="#">Cuenta</a></li>
+                    <li><a href="#">Seguridad</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Cerrar Sesión</a></li>
+        </ul>
+    </nav>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <!-- Datos del estudiante -->
+        <div class="user-data">
+            <div class="avatar">
+                <img src="/static/images/avatar.png" alt="Avatar">
+            </div>
+            <h2>Datos del Estudiante</h2>
+            <div>
+                <p>Matrícula: {{ estudiante.id }}</p>
+                <p>Nombre: {{ estudiante.nombre }}</p>
+                <p>Edad: {{ estudiante.edad }}</p>
+                <p>Domicilio: {{ estudiante.domicilio }}</p>
+                <p>Carrera: {{ estudiante.carrera }}</p>
+            </div>
+        </div>
+
+        <!-- Formulario de registro -->
+        <div class="right-side">
+            <h2>Registro de Alcoholímetro</h2>
+            <form action="{{ url_for('registrar_alcohol') }}" method="POST">
+                <input type="hidden" name="matricula" value="{{ estudiante.id }}">
+
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" readonly>
+
+                <label for="hora">Hora:</label>
+                <input type="time" id="hora" name="hora" readonly>
+
+                <script>
+                    const now = new Date();
+                    const fecha = now.toISOString().split('T')[0];
+                    const hora = now.toTimeString().split(':').slice(0, 2).join(':');
+
+                    document.getElementById("fecha").value = fecha;
+                    document.getElementById("hora").value = hora;
+                </script>
+                
+                <label for="id_operador">Nombre del Operador</label>
+                <select name="id_operador" id="id_operador" required>
+                    <option value="" disabled selected>Seleccione un operador autorizado</option>
+                    {% for operador in operadores %}
+                        <option value="{{ operador.id }}">{{ operador.nombre }}</option>
+                    {% endfor %}
+                </select>
+                
+                <label for="nivel">Nivel de Alcohol (g/L)</label>
+                <select name="nivel" id="nivel" required>
+                    <option value="" disabled selected>Seleccione una opción</option>
+                    {% for nivel in niveles %}
+                        <option value="{{ nivel }}">{{ nivel }} g/L</option>
+                    {% endfor %}
+                </select>
+                
+                <label for="comentario">Información Adicional</label>
+                <textarea id="comentario" name="comentario" rows="4" placeholder="Escribe información adicional"></textarea>
+                
+                <button type="submit">Registrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Activar o desactivar el menú
+        const menuToggle = document.querySelector('.menu-toggle');
+        const menu = document.querySelector('.menu');
+
+        menuToggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
