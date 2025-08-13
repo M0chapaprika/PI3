@@ -4,10 +4,11 @@ class ConexionDB:
     def __init__(self):
         try:
             self.connection = pyodbc.connect(
-                'DRIVER={SQL Server};'
-                'SERVER=LAPTOP-AB79J7C2;'
-                'DATABASE=Alcolimetro;'
-                'Trusted_Connection=yes;'
+            'DRIVER={SQL Server};'
+            'SERVER=IANDAVID\SQLSERVER;'
+            'DATABASE=Alcolimetro;'
+            'Trusted_Connection=yes;'
+            'PWD=SoyBienM0cha1;'
             )
             self.cursor = self.connection.cursor()
             self.errMss = ''
